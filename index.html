@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Higher Education Analytics | Domo</title>
+  <meta name="description" content="Transform student success, enrollment, and institutional performance with Domo's data platform. Real-time insights for universities and colleges.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --domo-blue: #99CCEE;
+      --domo-blue-dark: #7AB8E0;
+      --domo-orange: #FFB656;
+      --domo-purple: #776CB0;
+      --edu-navy: #1a365d;
+      --edu-accent: #2563eb;
+      --neutral-50: #FAFAFA;
+      --neutral-100: #F5F5F5;
+      --neutral-200: #E5E5E5;
+      --neutral-600: #525252;
+      --neutral-700: #404040;
+      --neutral-800: #262626;
+      --neutral-900: #171717;
+      --text-primary: #111;
+      --text-secondary: #444;
+      --text-muted: #666;
+      --font-sans: 'Open Sans', system-ui, sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--text-secondary);
+      line-height: 1.6;
+      background: white;
+    }
+
+    /* Navigation */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 64px;
+      height: 72px;
+      background: white;
+      border-bottom: 1px solid var(--neutral-200);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-logo svg { height: 40px; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav-link {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    .nav-cta { display: flex; gap: 12px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary { background: var(--domo-orange); color: var(--text-primary); }
+    .btn-primary:hover { filter: brightness(0.95); }
+    .btn-secondary { background: transparent; color: var(--text-primary); border: 1px solid var(--neutral-300); }
+    .btn-secondary:hover { background: var(--neutral-100); }
+    .btn-light { background: white; color: var(--text-primary); }
+
+    /* Hero */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      padding: 80px 64px 100px;
+      background: linear-gradient(135deg, #1a365d 0%, #2d4a7c 50%, #1e3a5f 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 80%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(153,204,238,0.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--domo-blue);
+      margin-bottom: 24px;
+      backdrop-filter: blur(4px);
+    }
+
+    .hero-title {
+      font-size: 52px;
+      font-weight: 700;
+      line-height: 1.1;
+      color: white;
+      margin-bottom: 24px;
+      letter-spacing: -1px;
+    }
+
+    .hero-title span { color: var(--domo-blue); }
+
+    .hero-description {
+      font-size: 20px;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 36px;
+      max-width: 520px;
+      line-height: 1.7;
+    }
+
+    .hero-cta { display: flex; gap: 16px; }
+
+    .hero-visual {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .hero-stat {
+      text-align: center;
+      padding: 20px;
+      background: var(--neutral-50);
+      border-radius: 12px;
+    }
+
+    .hero-stat-value {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--edu-navy);
+    }
+
+    .hero-stat-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Logo Strip */
+    .logo-strip {
+      padding: 48px 64px;
+      background: var(--neutral-50);
+      text-align: center;
+    }
+
+    .logo-strip-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .logo-strip-logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 64px;
+      flex-wrap: wrap;
+    }
+
+    .logo-strip-logo {
+      height: 32px;
+      opacity: 0.6;
+    }
+
+    /* Section Styles */
+    .section { padding: 100px 64px; }
+    .section-alt { background: var(--neutral-50); }
+    .section-dark { background: var(--edu-navy); color: white; }
+
+    .section-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 64px;
+    }
+
+    .section-eyebrow {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--edu-accent);
+      margin-bottom: 16px;
+    }
+
+    .section-dark .section-eyebrow { color: var(--domo-blue); }
+
+    .section-title {
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+      letter-spacing: -0.5px;
+    }
+
+    .section-dark .section-title { color: white; }
+
+    .section-description {
+      font-size: 18px;
+      color: var(--text-muted);
+    }
+
+    .section-dark .section-description { color: rgba(255,255,255,0.7); }
+
+    /* Challenges Grid */
+    .challenges-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .challenge-card {
+      background: white;
+      border-radius: 16px;
+      padding: 36px;
+      border: 1px solid var(--neutral-200);
+      transition: all 0.3s;
+    }
+
+    .challenge-card:hover {
+      border-color: var(--edu-accent);
+      box-shadow: 0 12px 40px rgba(37,99,235,0.1);
+      transform: translateY(-4px);
+    }
+
+    .challenge-icon {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, var(--domo-blue) 0%, var(--edu-accent) 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .challenge-icon svg {
+      width: 28px;
+      height: 28px;
+      stroke: white;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .challenge-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .challenge-description {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* Use Cases */
+    .use-case {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      margin-bottom: 80px;
+    }
+
+    .use-case:last-child { margin-bottom: 0; }
+    .use-case:nth-child(even) .use-case-content { order: 2; }
+    .use-case:nth-child(even) .use-case-visual { order: 1; }
+
+    .use-case-eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--edu-accent);
+      margin-bottom: 12px;
+    }
+
+    .use-case-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    .use-case-description {
+      font-size: 17px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      line-height: 1.7;
+    }
+
+    .use-case-benefits {
+      list-style: none;
+    }
+
+    .use-case-benefit {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+    }
+
+    .use-case-benefit-icon {
+      width: 24px;
+      height: 24px;
+      background: var(--domo-blue);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .use-case-benefit-icon svg {
+      width: 14px;
+      height: 14px;
+      stroke: var(--edu-navy);
+      stroke-width: 3;
+    }
+
+    .use-case-visual {
+      background: linear-gradient(135deg, var(--neutral-100) 0%, var(--neutral-200) 100%);
+      border-radius: 16px;
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Testimonial */
+    .testimonial-section {
+      padding: 100px 64px;
+      background: linear-gradient(135deg, var(--edu-navy) 0%, #2d4a7c 100%);
+    }
+
+    .testimonial {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .testimonial-logo {
+      height: 48px;
+      margin-bottom: 40px;
+      opacity: 0.9;
+    }
+
+    .testimonial-quote {
+      font-size: 28px;
+      font-weight: 400;
+      color: white;
+      line-height: 1.6;
+      margin-bottom: 40px;
+      font-style: italic;
+    }
+
+    .testimonial-author {
+      font-size: 16px;
+      font-weight: 600;
+      color: white;
+    }
+
+    .testimonial-role {
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+      margin-top: 4px;
+    }
+
+    /* Stats Section */
+    .stats-section {
+      padding: 80px 64px;
+      background: white;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 48px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 56px;
+      font-weight: 800;
+      color: var(--edu-navy);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-top: 12px;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      padding: 100px 64px;
+      background: linear-gradient(135deg, var(--domo-blue) 0%, var(--edu-accent) 100%);
+      text-align: center;
+    }
+
+    .cta-title {
+      font-size: 44px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 20px;
+    }
+
+    .cta-description {
+      font-size: 18px;
+      color: rgba(255,255,255,0.9);
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    .cta-buttons .btn-primary {
+      background: white;
+      color: var(--edu-navy);
+    }
+
+    .cta-buttons .btn-secondary {
+      background: transparent;
+      color: white;
+      border-color: rgba(255,255,255,0.4);
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--neutral-900);
+      color: white;
+      padding: 64px;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 48px;
+    }
+
+    .footer-column h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    .footer-column a {
+      display: block;
+      color: #888;
+      text-decoration: none;
+      font-size: 14px;
+      padding: 6px 0;
+    }
+
+    .footer-column a:hover { color: white; }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 32px;
+      border-top: 1px solid #333;
+      font-size: 13px;
+      color: #666;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .hero, .use-case { grid-template-columns: 1fr; gap: 48px; }
+      .hero-visual { display: none; }
+      .use-case-visual { height: 300px; order: 1 !important; }
+      .use-case-content { order: 2 !important; }
+      .challenges-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .section, .hero { padding: 60px 24px; }
+      .nav { padding: 0 24px; }
+      .nav-links { display: none; }
+    }
+
+    @media (max-width: 768px) {
+      .hero-title { font-size: 36px; }
+      .section-title { font-size: 28px; }
+      .use-case-title { font-size: 24px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+      .stat-value { font-size: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav">
+  <a href="/" class="nav-logo">
+    <svg viewBox="0 0 120 40" fill="none">
+      <rect width="40" height="40" rx="8" fill="#99CCEE"/>
+      <path d="M10 20C10 14.477 14.477 10 20 10V30C14.477 30 10 25.523 10 20Z" fill="white"/>
+      <path d="M20 10C25.523 10 30 14.477 30 20C30 25.523 25.523 30 20 30V10Z" fill="white" fill-opacity="0.6"/>
+      <text x="48" y="27" font-family="Open Sans" font-size="20" font-weight="700" fill="#111">domo</text>
+    </svg>
+  </a>
+  <div class="nav-links">
+    <a href="#challenges" class="nav-link">Challenges</a>
+    <a href="#solutions" class="nav-link">Solutions</a>
+    <a href="#results" class="nav-link">Results</a>
+    <a href="https://docs.domo.com" class="nav-link">Resources</a>
+  </div>
+  <div class="nav-cta">
+    <a href="#" class="btn btn-secondary">Watch Demo</a>
+    <a href="#" class="btn btn-primary">Start Free Trial</a>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+      </svg>
+      Higher Education
+    </div>
+    <h1 class="hero-title">
+      Data-driven decisions for <span>student success</span>
+    </h1>
+    <p class="hero-description">
+      Unite enrollment, retention, financial, and operational data in one platform. Give every stakeholder—from admissions to the president's office—the insights they need to drive better outcomes.
+    </p>
+    <div class="hero-cta">
+      <a href="#" class="btn btn-primary">Start Free Trial</a>
+      <a href="#" class="btn btn-light">Watch Demo →</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card">
+      <div style="font-weight: 700; color: var(--edu-navy); margin-bottom: 20px; font-size: 18px;">📊 Student Success Dashboard</div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-value" style="color: #22c55e;">+12%</div>
+          <div class="hero-stat-label">Retention Rate</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value" style="color: var(--edu-accent);">89%</div>
+          <div class="hero-stat-label">Enrollment Goal</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value" style="color: var(--domo-purple);">4.2yr</div>
+          <div class="hero-stat-label">Time to Graduate</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value" style="color: var(--domo-orange);">$2.4M</div>
+          <div class="hero-stat-label">Cost Savings</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Logo Strip -->
+<section class="logo-strip">
+  <p class="logo-strip-title">Trusted by leading institutions</p>
+  <div class="logo-strip-logos">
+    <svg class="logo-strip-logo" viewBox="0 0 140 32" fill="#444"><text x="0" y="24" font-size="18" font-weight="600">State University</text></svg>
+    <svg class="logo-strip-logo" viewBox="0 0 140 32" fill="#444"><text x="0" y="24" font-size="18" font-weight="600">Tech Institute</text></svg>
+    <svg class="logo-strip-logo" viewBox="0 0 160 32" fill="#444"><text x="0" y="24" font-size="18" font-weight="600">Community College</text></svg>
+    <svg class="logo-strip-logo" viewBox="0 0 160 32" fill="#444"><text x="0" y="24" font-size="18" font-weight="600">Research University</text></svg>
+  </div>
+</section>
+
+<!-- Challenges Section -->
+<section class="section section-alt" id="challenges">
+  <div class="section-header">
+    <div class="section-eyebrow">The Challenge</div>
+    <h2 class="section-title">Higher ed data is everywhere—and nowhere</h2>
+    <p class="section-description">
+      Student information systems, LMS platforms, financial software, HR systems—data lives in silos. Domo brings it all together.
+    </p>
+  </div>
+  <div class="challenges-grid">
+    <div class="challenge-card">
+      <div class="challenge-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <h3 class="challenge-title">Enrollment Pressure</h3>
+      <p class="challenge-description">
+        Declining demographics and increased competition demand smarter recruitment. Understand your funnel from prospect to enrolled student.
+      </p>
+    </div>
+    <div class="challenge-card">
+      <div class="challenge-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h3 class="challenge-title">Retention Risk</h3>
+      <p class="challenge-description">
+        Identify at-risk students before they leave. Combine academic, financial, and engagement data to intervene early.
+      </p>
+    </div>
+    <div class="challenge-card">
+      <div class="challenge-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      </div>
+      <h3 class="challenge-title">Budget Constraints</h3>
+      <p class="challenge-description">
+        Do more with less. Gain visibility into spending, forecast accurately, and make data-driven budget decisions.
+      </p>
+    </div>
+    <div class="challenge-card">
+      <div class="challenge-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <h3 class="challenge-title">Data Silos</h3>
+      <p class="challenge-description">
+        SIS, LMS, ERP, CRM—your data is fragmented. Unify it for a complete view of institutional performance.
+      </p>
+    </div>
+    <div class="challenge-card">
+      <div class="challenge-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <h3 class="challenge-title">Reporting Burden</h3>
+      <p class="challenge-description">
+        Hours spent pulling data for accreditation, board meetings, and compliance. Automate reporting and get time back.
+      </p>
+    </div>
+    <div class="challenge-card">
+      <div class="challenge-icon">
+        <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      </div>
+      <h3 class="challenge-title">Workforce Planning</h3>
+      <p class="challenge-description">
+        Align faculty and staff with enrollment patterns. Optimize scheduling, hiring, and resource allocation.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Solutions Section -->
+<section class="section" id="solutions">
+  <div class="section-header">
+    <div class="section-eyebrow">Solutions</div>
+    <h2 class="section-title">Purpose-built for higher education</h2>
+    <p class="section-description">
+      From the admissions office to the boardroom, Domo delivers insights that drive action.
+    </p>
+  </div>
+  
+  <div class="use-case">
+    <div class="use-case-content">
+      <div class="use-case-eyebrow">Enrollment Management</div>
+      <h3 class="use-case-title">Fill your class with confidence</h3>
+      <p class="use-case-description">
+        Track prospects through every stage of the funnel. Understand which channels, campaigns, and touchpoints drive enrollment—and optimize in real-time.
+      </p>
+      <ul class="use-case-benefits">
+        <li class="use-case-benefit">
+          <div class="use-case-benefit-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor"/></svg></div>
+          <span>Full-funnel visibility from inquiry to enrollment</span>
+        </li>
+        <li class="use-case-benefit">
+          <div class="use-case-benefit-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor"/></svg></div>
+          <span>Predictive models for yield optimization</span>
+        </li>
+        <li class="use-case-benefit">
+          <div class="use-case-benefit-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor"/></svg></div>
+          <span>Real-time campaign performance tracking</span>
+        </li>
+      </ul>
+    </div>
+    <div class="use-case-visual">
+      <svg viewBox="0 0 300 200" style="width: 80%;">
+        <text x="30" y="30" font-size="14" font-weight="600" fill="#1a365d">Enrollment Funnel</text>
+        <rect x="30" y="50" width="240" height="20" rx="4" fill="#99CCEE"/>
+        <text x="280" y="65" text-anchor="end" font-size="11" fill="#666">12,450 Inquiries</text>
+        <rect x="50" y="80" width="180" height="20" rx="4" fill="#7AB8E0"/>
+        <text x="240" y="95" text-anchor="end" font-size="11" fill="#666">6,230 Applications</text>
+        <rect x="70" y="110" width="140" height="20" rx="4" fill="#2563eb"/>
+        <text x="220" y="125" text-anchor="end" font-size="11" fill="#666">4,180 Admits</text>
+        <rect x="90" y="140" width="100" height="20" rx="4" fill="#1a365d"/>
+        <text x="200" y="155" text-anchor="end" font-size="11" fill="#666">2,450 Enrolled</text>
+        <text x="30" y="185" font-size="12" fill="#22c55e" font-weight="600">↑ 8% vs. last year</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="use-case">
+    <div class="use-case-content">
+      <div class="use-case-eyebrow">Student Success</div>
+      <h3 class="use-case-title">Intervene before students struggle</h3>
+      <p class="use-case-description">
+        Combine academic performance, financial aid status, and engagement signals to identify at-risk students early. Automate alerts to advisors and support staff.
+      </p>
+      <ul class="use-case-benefits">
+        <li class="use-case-benefit">
+          <div class="use-case-benefit-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor"/></svg></div>
+          <span>Early warning systems with automated alerts</span>
+        </li>
+        <li class="use-case-benefit">
+          <div class="use-case-benefit-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor"/></svg></div>
+          <span>Holistic student view across all systems</span>
+        </li>
+        <li class="use-case-benefit">
+          <div class="use-case-benefit-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor"/></svg></div>
+          <span>Retention and graduation rate tracking</span>
+        </li>
+      </ul>
+    </div>
+    <div class="use-case-visual">
+      <svg viewBox="0 0 300 200" style="width: 80%;">
+        <text x="30" y="30" font-size="14" font-weight="600" fill="#1a365d">At-Risk Students</text>
+        <circle cx="80" cy="110" r="50" fill="#22c55e" opacity="0.2"/>
+        <circle cx="80" cy="110" r="40" fill="#22c55e" opacity="0.4"/>
+        <text x="80" y="105" text-anchor="middle" font-size="24" font-weight="700" fill="#22c55e">78%</text>
+        <text x="80" y="125" text-anchor="middle" font-size="10" fill="#666">On Track</text>
+        <circle cx="180" cy="110" r="35" fill="#FFB656" opacity="0.3"/>
+        <circle cx="180" cy="110" r="28" fill="#FFB656" opacity="0.5"/>
+        <text x="180" y="105" text-anchor="middle" font-size="20" font-weight="700" fill="#d97706">15%</text>
+        <text x="180" y="125" text-anchor="middle" font-size="10" fill="#666">Watch</text>
+        <circle cx="260" cy="110" r="25" fill="#ef4444" opacity="0.3"/>
+        <circle cx="260" cy="110" r="18" fill="#ef4444" opacity="0.5"/>
+        <text x="260" y="105" text-anchor="middle" font-size="16" font-weight="700" fill="#ef4444">7%</text>
+        <text x="260" y="125" text-anchor="middle" font-size="10" fill="#666">At Risk</text>
+        <text x="30" y="180" font-size="11" fill="#666">142 students flagged for intervention this week</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="use-case">
+    <div class="use-case-content">
+      <div class="use-case-eyebrow">Financial Operations</div>
+      <h3 class="use-case-title">Budget with precision</h3>
+      <p class="use-case-description">
+        Connect enrollment projections to revenue forecasts. Track spending across departments. Model scenarios to make informed budget decisions.
+      </p>
+      <ul class="use-case-benefits">
+        <li class="use-case-benefit">
+          <div class="use-case-benefit-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor"/></svg></div>
+          <span>Revenue forecasting tied to enrollment</span>
+        </li>
+        <li class="use-case-benefit">
+          <div class="use-case-benefit-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor"/></svg></div>
+          <span>Department-level spending visibility</span>
+        </li>
+        <li class="use-case-benefit">
+          <div class="use-case-benefit-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor"/></svg></div>
+          <span>Scenario modeling for budget planning</span>
+        </li>
+      </ul>
+    </div>
+    <div class="use-case-visual">
+      <svg viewBox="0 0 300 200" style="width: 80%;">
+        <text x="30" y="30" font-size="14" font-weight="600" fill="#1a365d">Budget vs. Actual</text>
+        <rect x="50" y="60" width="30" height="100" rx="4" fill="#99CCEE"/>
+        <rect x="85" y="80" width="30" height="80" rx="4" fill="#1a365d"/>
+        <rect x="140" y="50" width="30" height="110" rx="4" fill="#99CCEE"/>
+        <rect x="175" y="55" width="30" height="105" rx="4" fill="#1a365d"/>
+        <rect x="230" y="70" width="30" height="90" rx="4" fill="#99CCEE"/>
+        <rect x="265" y="65" width="30" height="95" rx="4" fill="#1a365d"/>
+        <text x="65" y="175" text-anchor="middle" font-size="10" fill="#666">Q1</text>
+        <text x="155" y="175" text-anchor="middle" font-size="10" fill="#666">Q2</text>
+        <text x="250" y="175" text-anchor="middle" font-size="10" fill="#666">Q3</text>
+        <circle cx="50" cy="190" r="5" fill="#99CCEE"/>
+        <text x="60" y="193" font-size="10" fill="#666">Budget</text>
+        <circle cx="120" cy="190" r="5" fill="#1a365d"/>
+        <text x="130" y="193" font-size="10" fill="#666">Actual</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonial Section -->
+<section class="testimonial-section">
+  <div class="testimonial">
+    <div style="font-size: 48px; margin-bottom: 24px; opacity: 0.5;">🎓</div>
+    <blockquote class="testimonial-quote">
+      "Domo has transformed how we approach student success. We went from gut feelings to data-driven interventions—and our retention rate has improved by 12% in two years."
+    </blockquote>
+    <div class="testimonial-author">Dr. Sarah Mitchell</div>
+    <div class="testimonial-role">Vice Provost for Student Success, Regional State University</div>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section" id="results">
+  <div class="section-header">
+    <div class="section-eyebrow">Results</div>
+    <h2 class="section-title">Outcomes that matter</h2>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-item">
+      <div class="stat-value">12%</div>
+      <div class="stat-label">Average retention improvement</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">40%</div>
+      <div class="stat-label">Faster reporting cycles</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">$2M+</div>
+      <div class="stat-label">Cost savings per institution</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">100+</div>
+      <div class="stat-label">Education data connectors</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+  <h2 class="cta-title">Ready to transform your institution?</h2>
+  <p class="cta-description">
+    Join hundreds of colleges and universities using Domo to improve student outcomes, optimize operations, and make data-driven decisions.
+  </p>
+  <div class="cta-buttons">
+    <a href="#" class="btn btn-primary">Start Free Trial</a>
+    <a href="#" class="btn btn-secondary">Schedule Demo</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-column">
+      <h4>Platform</h4>
+      <a href="#">Data Integration</a>
+      <a href="#">Business Intelligence</a>
+      <a href="#">Embedded Analytics</a>
+      <a href="#">AI & Automation</a>
+    </div>
+    <div class="footer-column">
+      <h4>Industries</h4>
+      <a href="#">Higher Education</a>
+      <a href="#">K-12</a>
+      <a href="#">Healthcare</a>
+      <a href="#">Financial Services</a>
+    </div>
+    <div class="footer-column">
+      <h4>Resources</h4>
+      <a href="#">Documentation</a>
+      <a href="#">Community</a>
+      <a href="#">Knowledge Base</a>
+      <a href="#">Webinars</a>
+    </div>
+    <div class="footer-column">
+      <h4>Company</h4>
+      <a href="#">About Domo</a>
+      <a href="#">Careers</a>
+      <a href="#">Contact</a>
+      <a href="#">Trust Center</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Domo, Inc. All rights reserved.</span>
+    <span>
+      <a href="#" style="color: #888;">Privacy</a> · 
+      <a href="#" style="color: #888;">Terms</a> · 
+      <a href="#" style="color: #888;">Security</a>
+    </span>
+  </div>
+</footer>
+
+</body>
+</html>
